@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aws-demo
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      endpoint: http://localhost:4566
+      credentials:
+        access-key: test
+        secret-key: test
+      stack:
+        auto: false
+      s3:
+        endpoint: http://localhost:4566
+        bucketName: test-bucket
+      dynamodb:
+        endpoint: http://localhost:4566
+      lambda:
+        endpoint: http://localhost:4566
+      sns:
+        endpoint: http://localhost:4566
+        region: us-east-1
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
+
+aws:
+  s3:
+    bucket-name: test-bucket
+  dynamodb:
+    table-name: file-metadata
+  sns:
+    topic-arn: arn:aws:sns:us-east-1:000000000000:file-notifications-new
