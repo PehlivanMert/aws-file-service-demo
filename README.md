@@ -10,6 +10,7 @@
 7. [Hata Kodları](#hata-kodları)
 8. [Sorun Giderme](#sorun-giderme)
 9. [Log Yönetimi](#log-yönetimi)
+10. [English](#Table-of-Contents)
 
 ## Genel Bakış
 AWS File Service Demo, Amazon Web Services (AWS) servislerini kullanarak dosya yönetimi ve kullanıcı profil fotoğrafı yönetimi sağlayan bir REST API uygulamasıdır. Uygulama aşağıdaki servisleri kullanmaktadır:
