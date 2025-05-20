@@ -439,8 +439,8 @@ AWS File Service Demo is a REST API application that provides file management an
 ### 1. Download Project
 ```bash
 # Clone the project
-git clone [project-url]
-cd AwsS3App-main
+git clone [https://github.com/PehlivanMert/aws-file-service-demo.git]
+cd aws-file-service-demo
 ```
 
 ### 2. Docker Services Setup
@@ -477,6 +477,7 @@ docker-compose exec aws-file-service-localstack awslocal sns list-topics
 If you encounter issues with AWS services or want to re-configure them:
 ```bash
 # Restart AWS services
+chmod +x aws-init.sh
 docker-compose exec aws-file-service-localstack /docker-entrypoint-initaws.d/aws-init.sh
 ```
 
