@@ -5,7 +5,7 @@ echo "Starting AWS Services Initialization..."
 
 # S3 Bucket Creation
 echo "Creating S3 Bucket..."
-awslocal s3api create-bucket --bucket test-bucket
+awslocal s3api create-bucket --bucket aws-file-service-bucket
 awslocal s3api list-buckets
 
 # DynamoDB Table Creation
@@ -22,20 +22,20 @@ awslocal dynamodb create-table \
 
 # SNS Topic Creation
 echo "Creating SNS Topic..."
-awslocal sns create-topic --name file-notifications-new
+awslocal sns create-topic --name aws-file-service-notifications
 awslocal sns subscribe \
-    --topic-arn arn:aws:sns:us-east-1:000000000000:file-notifications-new \
+    --topic-arn arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications \
     --protocol email \
     --notification-endpoint your-email@example.com
 
 # S3 Event Notifications
 echo "Setting up S3 Event Notifications..."
 awslocal s3api put-bucket-notification-configuration \
-    --bucket test-bucket \
+    --bucket aws-file-service-bucket \
     --notification-configuration '{
         "TopicConfigurations": [
             {
-                "TopicArn": "arn:aws:sns:us-east-1:000000000000:file-notifications-new",
+                "TopicArn": "arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications",
                 "Events": ["s3:ObjectCreated:*", "s3:ObjectRemoved:*"]
             }
         ]
@@ -44,7 +44,7 @@ awslocal s3api put-bucket-notification-configuration \
 # CORS Configuration
 echo "Setting up CORS configuration..."
 awslocal s3api put-bucket-cors \
-    --bucket test-bucket \
+    --bucket aws-file-service-bucket \
     --cors-configuration '{
         "CORSRules": [
             {
@@ -59,13 +59,13 @@ awslocal s3api put-bucket-cors \
 # SNS Logging Configuration
 echo "Setting up SNS logging..."
 awslocal sns set-topic-attributes \
-    --topic-arn arn:aws:sns:us-east-1:000000000000:file-notifications-new \
+    --topic-arn arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications \
     --attribute-name DisplayName \
-    --attribute-value "File Notifications"
+    --attribute-value "AWS File Service Notifications"
 
 # Enable SNS logging
 awslocal sns set-topic-attributes \
-    --topic-arn arn:aws:sns:us-east-1:000000000000:file-notifications-new \
+    --topic-arn arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications \
     --attribute-name Policy \
     --attribute-value '{
         "Version": "2012-10-17",
@@ -74,10 +74,10 @@ awslocal sns set-topic-attributes \
                 "Effect": "Allow",
                 "Principal": "*",
                 "Action": "SNS:Publish",
-                "Resource": "arn:aws:sns:us-east-1:000000000000:file-notifications-new",
+                "Resource": "arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications",
                 "Condition": {
                     "ArnLike": {
-                        "aws:SourceArn": "arn:aws:s3:::test-bucket"
+                        "aws:SourceArn": "arn:aws:s3:::aws-file-service-bucket"
                     }
                 }
             }
@@ -88,6 +88,6 @@ echo "AWS Services Initialization Completed."
 
 # Start SNS message monitoring
 echo "Starting SNS message monitoring..."
-awslocal sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:000000000000:file-notifications-new
+awslocal sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications
 
 set +x

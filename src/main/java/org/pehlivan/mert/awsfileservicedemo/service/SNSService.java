@@ -1,6 +1,7 @@
 package org.pehlivan.mert.awsfileservicedemo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.pehlivan.mert.awsfileservicedemo.exception.SNSException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -25,7 +26,7 @@ public class SNSService {
             PublishResponse response = snsClient.publish(request);
             return response.messageId();
         } catch (Exception e) {
-            throw new RuntimeException("Error publishing message to SNS: " + e.getMessage(), e);
+            throw new SNSException("Error publishing message to SNS: " + e.getMessage());
         }
     }
 
@@ -40,7 +41,7 @@ public class SNSService {
             PublishResponse response = snsClient.publish(request);
             return response.messageId();
         } catch (Exception e) {
-            throw new RuntimeException("Error publishing message to SNS: " + e.getMessage(), e);
+            throw new SNSException("Error publishing message to SNS: " + e.getMessage());
         }
     }
 }

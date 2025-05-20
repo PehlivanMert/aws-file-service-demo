@@ -1,5 +1,5 @@
 services:
-  s3-demo-postgres:
+  aws-file-service-postgres:
     image: postgres:15
     environment:
       POSTGRES_DB: aws-demo
@@ -8,14 +8,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - s3-demo-postgres-data:/var/lib/postgresql/data
+      - aws-file-service-postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  s3-demo-localstack:
+  aws-file-service-localstack:
     image: localstack/localstack:4.1.0
     environment:
       - SERVICES=s3,dynamodb,sns
@@ -28,7 +28,7 @@ services:
     ports:
       - "4566:4566"
     volumes:
-      - s3-demo-localstack-data:/tmp/localstack4
+      - aws-file-service-localstack-data:/tmp/localstack4
       - ./aws-init.sh:/docker-entrypoint-initaws.d/aws-init.sh
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
@@ -37,12 +37,12 @@ services:
       timeout: 5s
       retries: 5
 
-  s3-demo-redis:
+  aws-file-service-redis:
     image: redis:7
     ports:
       - "6379:6379"
     volumes:
-      - s3-demo-redis-data:/data
+      - aws-file-service-redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -50,6 +50,6 @@ services:
       retries: 5
 
 volumes:
-  s3-demo-localstack-data:
-  s3-demo-postgres-data:
-  s3-demo-redis-data:
+  aws-file-service-localstack-data:
+  aws-file-service-postgres-data:
+  aws-file-service-redis-data:

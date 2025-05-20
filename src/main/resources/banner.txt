@@ -1,0 +1,26 @@
+Fight Bugs                      |     |
+                                \\_V_//
+                                \/=|=\/
+                                 [=v=]
+                               __\___/_____
+                              /..[  _____  ]
+                             /_  [ [  M /] ]
+                            /../.[ [ M /@] ]
+                           <-->[_[ [M /@/] ]
+                          /../ [.[ [ /@/ ] ]
+     _________________]\ /__/  [_[ [/@/ C] ]
+    <_________________>>0---]  [=\ \@/ C / /
+       ___      ___   ]/000o   /__\ \ C / /
+          \    /              /....\ \_/ /
+       ....\||/....           [___/=\___/
+      .    .  .    .          [...] [...]
+     .      ..      .         [___/ \___]
+     .    0 .. 0    .         <---> <--->
+  /\/\.    .  .    ./\/\      [..]   [..]
+ / / / .../|  |\... \ \ \    _[__]   [__]_
+/ / /       \/       \ \ \  [____>   <____]
+
+${AnsiColor.BLACK}   ${AnsiColor.BRIGHT_RED}Application Name   : ${AnsiColor.DEFAULT}${spring.application.name}
+${AnsiColor.BLACK}   ${AnsiColor.BRIGHT_YELLOW}Spring Boot Version : ${AnsiColor.DEFAULT}${spring-boot.formatted-version}
+${AnsiColor.BLACK}   ${AnsiColor.BRIGHT_GREEN}Java Version        : ${AnsiColor.DEFAULT}${java.version}
+${AnsiColor.BLACK}   ${AnsiColor.MAGENTA}Created by          : ${AnsiColor.DEFAULT}${spring.info.build.creator}

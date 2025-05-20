@@ -2,6 +2,11 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: aws-file-service-demo
+  info:
+    build:
+      creator: Mert Pehlivan
   datasource:
     url: jdbc:postgresql://localhost:5432/aws-demo
     username: postgres
@@ -37,7 +42,7 @@ spring:
         auto: false
       s3:
         endpoint: http://localhost:4566
-        bucketName: test-bucket
+        bucketName: aws-file-service-bucket
       dynamodb:
         endpoint: http://localhost:4566
       lambda:
@@ -52,8 +57,8 @@ spring:
 
 aws:
   s3:
-    bucket-name: test-bucket
+    bucket-name: aws-file-service-bucket
   dynamodb:
     table-name: file-metadata
   sns:
-    topic-arn: arn:aws:sns:us-east-1:000000000000:file-notifications-new
+    topic-arn: arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications

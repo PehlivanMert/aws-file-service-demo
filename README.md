@@ -1,4 +1,4 @@
-# AWS S3 App Kullanım Kılavuzu
+# AWS File Service Demo
 
 ## İçindekiler
 1. [Genel Bakış](#genel-bakış)
@@ -12,7 +12,7 @@
 9. [Log Yönetimi](#log-yönetimi)
 
 ## Genel Bakış
-AWS S3 App, Amazon Web Services (AWS) servislerini kullanarak dosya yönetimi ve kullanıcı profil fotoğrafı yönetimi sağlayan bir REST API uygulamasıdır. Uygulama aşağıdaki servisleri kullanmaktadır:
+AWS File Service Demo, Amazon Web Services (AWS) servislerini kullanarak dosya yönetimi ve kullanıcı profil fotoğrafı yönetimi sağlayan bir REST API uygulamasıdır. Uygulama aşağıdaki servisleri kullanmaktadır:
 
 - Amazon S3: Dosya depolama
 - Amazon DynamoDB: Metadata depolama
@@ -46,7 +46,7 @@ docker-compose up -d
 ```
 
 Bu komut aşağıdaki servisleri başlatacaktır:
-- PostgreSQL (Port: 5433)
+- PostgreSQL (Port: 5432)
 - LocalStack (Port: 4566)
 - Redis (Port: 6379)
 
@@ -60,20 +60,21 @@ LocalStack container'ı başlatıldığında, `aws-init.sh` scripti otomatik ola
 ### 3. AWS Servislerinin Kontrolü
 ```bash
 # S3 bucket'ı kontrol edin
-docker-compose exec s3-demo-localstack awslocal s3api list-buckets
+docker-compose exec aws-file-service-localstack awslocal s3api list-buckets
 
 # DynamoDB tablosunu kontrol edin
-docker-compose exec s3-demo-localstack awslocal dynamodb list-tables
+docker-compose exec aws-file-service-localstack awslocal dynamodb list-tables
 
 # SNS topic'lerini kontrol edin
-docker-compose exec s3-demo-localstack awslocal sns list-topics
+docker-compose exec aws-file-service-localstack awslocal sns list-topics
 ```
 
 ### 4. AWS Servislerini Yeniden Başlatma
 Eğer AWS servislerinde bir sorun yaşarsanız veya servisleri yeniden yapılandırmak isterseniz:
 ```bash
 # AWS servislerini yeniden başlatın
-docker-compose exec s3-demo-localstack /docker-entrypoint-initaws.d/aws-init.sh
+chmod +x aws-init.sh
+docker-compose exec aws-file-service-localstack /docker-entrypoint-initaws.d/aws-init.sh
 ```
 
 Bu komut:
@@ -187,12 +188,12 @@ SNS (Simple Notification Service) yapılandırması ve bildirimleri:
 ```bash
 # SNS Topic Oluşturma
 {
-    "TopicArn": "arn:aws:sns:us-east-1:000000000000:file-notifications-new"
+    "TopicArn": "arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications"
 }
 
 # SNS Email Aboneliği
 {
-    "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:file-notifications-new:0dfbc0bb-b366-4ed1-95ba-c4743e55ce3a",
+    "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications:0dfbc0bb-b366-4ed1-95ba-c4743e55ce3a",
     "Protocol": "email",
     "Endpoint": "your-email@example.com"
 }
@@ -201,11 +202,11 @@ SNS (Simple Notification Service) yapılandırması ve bildirimleri:
 {
     "Subscriptions": [
         {
-            "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:file-notifications-new:0dfbc0bb-b366-4ed1-95ba-c4743e55ce3a",
+            "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications:0dfbc0bb-b366-4ed1-95ba-c4743e55ce3a",
             "Owner": "000000000000",
             "Protocol": "email",
             "Endpoint": "your-email@example.com",
-            "TopicArn": "arn:aws:sns:us-east-1:000000000000:file-notifications-new"
+            "TopicArn": "arn:aws:sns:us-east-1:000000000000:aws-file-service-notifications"
         }
     ]
 }
@@ -308,22 +309,22 @@ docker-compose restart
 ### 2. AWS Servisleri
 ```bash
 # S3 bucket'ı kontrol edin
-docker-compose exec s3-demo-localstack awslocal s3api list-buckets
+docker-compose exec aws-file-service-localstack awslocal s3api list-buckets
 
 # DynamoDB tablosunu kontrol edin
-docker-compose exec s3-demo-localstack awslocal dynamodb list-tables
+docker-compose exec aws-file-service-localstack awslocal dynamodb list-tables
 
 # SNS topic'lerini kontrol edin
-docker-compose exec s3-demo-localstack awslocal sns list-topics
+docker-compose exec aws-file-service-localstack awslocal sns list-topics
 
 # AWS servislerini yeniden başlatın
-docker-compose exec s3-demo-localstack /docker-entrypoint-initaws.d/aws-init.sh
+docker-compose exec aws-file-service-localstack /docker-entrypoint-initaws.d/aws-init.sh
 ```
 
 ### 3. Veritabanı Kontrolü
 ```bash
 # PostgreSQL container'ına bağlanın
-docker-compose exec s3-demo-postgres psql -U postgres -d s3-demo
+docker-compose exec aws-file-service-postgres psql -U postgres -d aws-demo
 
 # Veritabanı tablolarını listele
 \dt
@@ -353,10 +354,10 @@ docker-compose up -d
 #### "Veritabanı bağlantı hatası"
 ```bash
 # PostgreSQL container'ının durumunu kontrol edin
-docker-compose ps s3-demo-postgres
+docker-compose ps aws-file-service-postgres
 
 # PostgreSQL loglarını kontrol edin
-docker-compose logs s3-demo-postgres
+docker-compose logs aws-file-service-postgres
 ```
 
 ## Log Yönetimi
@@ -414,7 +415,7 @@ Sorunları ve önerileriniz için:
 9. [Log Management](#log-management)
 
 ## Overview
-AWS S3 App is a REST API application that provides file management and user profile photo management using Amazon Web Services (AWS) services. The application uses the following AWS services:
+AWS File Service Demo is a REST API application that provides file management and user profile photo management using Amazon Web Services (AWS) services. The application uses the following AWS services:
 
 - Amazon S3: File storage
 - Amazon DynamoDB: Metadata storage
@@ -463,20 +464,20 @@ When the LocalStack container starts, the `aws-init.sh` script runs automaticall
 ### 3. AWS Services Check
 ```bash
 # Check S3 bucket
-docker-compose exec s3-demo-localstack awslocal s3api list-buckets
+docker-compose exec aws-file-service-localstack awslocal s3api list-buckets
 
 # Check DynamoDB table
-docker-compose exec s3-demo-localstack awslocal dynamodb list-tables
+docker-compose exec aws-file-service-localstack awslocal dynamodb list-tables
 
 # Check SNS topics
-docker-compose exec s3-demo-localstack awslocal sns list-topics
+docker-compose exec aws-file-service-localstack awslocal sns list-topics
 ```
 
 ### 4. AWS Services Restart
 If you encounter issues with AWS services or want to re-configure them:
 ```bash
 # Restart AWS services
-docker-compose exec s3-demo-localstack /docker-entrypoint-initaws.d/aws-init.sh
+docker-compose exec aws-file-service-localstack /docker-entrypoint-initaws.d/aws-init.sh
 ```
 
 This command:
@@ -629,22 +630,22 @@ docker-compose restart
 ### 2. AWS Services
 ```bash
 # Check S3 bucket
-docker-compose exec s3-demo-localstack awslocal s3api list-buckets
+docker-compose exec aws-file-service-localstack awslocal s3api list-buckets
 
 # Check DynamoDB table
-docker-compose exec s3-demo-localstack awslocal dynamodb list-tables
+docker-compose exec aws-file-service-localstack awslocal dynamodb list-tables
 
 # Check SNS topics
-docker-compose exec s3-demo-localstack awslocal sns list-topics
+docker-compose exec aws-file-service-localstack awslocal sns list-topics
 
 # Restart AWS services
-docker-compose exec s3-demo-localstack /docker-entrypoint-initaws.d/aws-init.sh
+docker-compose exec aws-file-service-localstack /docker-entrypoint-initaws.d/aws-init.sh
 ```
 
 ### 3. Database Check
 ```bash
 # Connect to PostgreSQL container
-docker-compose exec s3-demo-postgres psql -U postgres -d s3-demo
+docker-compose exec aws-file-service-postgres psql -U postgres -d aws-demo
 
 # List database tables
 \dt
@@ -674,10 +675,10 @@ docker-compose up -d
 #### "Database connection error"
 ```bash
 # Check PostgreSQL container status
-docker-compose ps s3-demo-postgres
+docker-compose ps aws-file-service-postgres
 
 # Check PostgreSQL logs
-docker-compose logs s3-demo-postgres
+docker-compose logs aws-file-service-postgres
 ```
 
 ## Log Management

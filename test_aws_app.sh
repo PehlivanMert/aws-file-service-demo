@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "=== AWS S3 App Test Script ==="
+echo "=== AWS File Service Demo Test Script ==="
 echo "Starting tests at $(date)"
 echo "============================="
 
