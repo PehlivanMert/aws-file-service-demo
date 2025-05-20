@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.pehlivan.mert.awsfileservicedemo.dto.UserCreateRequest;
 
 @Entity
 @Table(name = "\"user\"")
